@@ -4,7 +4,6 @@
  */
 
 const files = require.context('.', false, /\.js$/);
-console.log(files);
 const modules = {};
 
 files.keys().forEach(key => {

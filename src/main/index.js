@@ -48,6 +48,9 @@ app.on('activate', () => {
   }
 });
 
+// 读取指定目录的所有md文件
+
+
 /**
  * Auto Updater
  *

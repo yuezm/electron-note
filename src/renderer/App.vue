@@ -1,15 +1,21 @@
 <template>
   <div id="app">
+    <Slider></Slider>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'electron-note',
-  };
+import Slider from './pages/Slider.vue';
+
+export default {
+  name: 'electron-note',
+  components: {
+    Slider,
+  },
+};
 </script>
 
 <style>
-  /* CSS */
+/* CSS */
 </style>
