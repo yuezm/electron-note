@@ -2,7 +2,7 @@
   <div>
     <Menu theme="light" mode="horizontal" @on-select="selectMenu">
       <menu-item :name="item.name" v-for="(item, index) in mineNoteList" :key="index">
-        <Icon type="logo-markdown" class="slider-icon" />
+        <Icon type="logo-markdown" class="slider-icon"/>
         {{item.label}}
       </menu-item>
     </Menu>
@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 import { splitFilename } from '../utils/util';
+// import { mapActions, mapState } from 'vuex';
 
 const targetDir = fs.readdirSync('/home/yzm/yzm/NOTE/docs');
 const fileList = targetDir.map(item => {
@@ -32,14 +33,13 @@ export default {
   },
   methods: {
     selectMenu(name) {
-      this.$store.dispatch('SET_TITLE', name);
-      console.log(this.$store.dispatch);
+      this.$store.commit('SET_TITLE', name);
     },
   },
 };
 </script>
 <style scoped lang="less">
-.slider-icon {
-  font-size: 20px;
-}
+  .slider-icon {
+    font-size: 20px;
+  }
 </style>

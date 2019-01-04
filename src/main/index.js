@@ -1,5 +1,4 @@
 import { app, BrowserWindow } from 'electron';
-
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -20,6 +19,7 @@ function createWindow() {
   /**
    * Initial window options
    */
+  BrowserWindow.addDevToolsExtension('/home/yzm/.config/google-chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/4.1.5_0');
   mainWindow = new BrowserWindow({
     height: 830,
     useContentSize: true,

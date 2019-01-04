@@ -1,17 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { createPersistedState, createSharedMutations } from 'vuex-electron';
-
-import modules from './modules';
+// import { createPersistedState, createSharedMutations } from 'vuex-electron';
+import Note from './modules/Note';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules,
-  plugins: [
-    createPersistedState(),
-    createSharedMutations(),
-  ],
+  modules: {
+    Note,
+  },
+  // plugins: [
+  //   createPersistedState(),
+  //   createSharedMutations(),
+  // ],
   strict: process.env.NODE_ENV !== 'production',
 });

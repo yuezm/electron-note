@@ -3,15 +3,26 @@ const state = {
 };
 
 const mutations = {
-  GET_TITLE(state) {
-    return state.title;
-  },
   SET_TITLE(state, title) {
     state.title = title;
   },
 };
 
+const getters = {
+  GET_TITLE(state) {
+    return state.title;
+  },
+};
+
+const actions = {
+  SET_TITLE({ commit }, title) {
+    commit('SET_TITLE', title);
+  },
+};
+
 export default {
-  state,
+  actions,
+  getters,
   mutations,
+  state,
 };

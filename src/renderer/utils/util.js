@@ -1,5 +1,6 @@
 const path = require('path');
 import MarkdownIt from 'markdown-it';
+const md = new MarkdownIt();
 
 // ------ 标题组件树 ------
 class StorageTitle {
@@ -9,7 +10,7 @@ class StorageTitle {
   }
 
   /**
-   *
+   * 生成标题树
    * @param {number} level number enmu [1,2,3] 分别对应 h1,h2,h3
    * @param {string} content 标题内容
    * @return {*} 锚点内容
@@ -27,15 +28,15 @@ class StorageTitle {
       return href;
     }
 
-    const { children, href } = this[ 'h' + (level - 1) + 'LevelTree' ];
+    const { children, href } = this['h' + (level - 1) + 'LevelTree'];
     const nowHref = StorageTitle.formatHref(href, content);
-    this[ 'h' + level + 'LevelTree' ] = {
+    this['h' + level + 'LevelTree'] = {
       tag: 'h' + level,
       content,
       href: nowHref,
       children: [],
     };
-    children.push(this[ 'h' + level + 'LevelTree' ]);
+    children.push(this['h' + level + 'LevelTree']);
     return nowHref;
   }
 
@@ -47,10 +48,12 @@ class StorageTitle {
    */
   static formatHref(href, connection = '') {
     const re = /[^a-z|A-Z|0-9|-|_|:|\.]/;
-    return href.replace(re, '') + (connection ? '_' + connection.replace(re, '') : '');
+    return (
+      href.replace(re, '') +
+      (connection ? '_' + connection.replace(re, '') : '')
+    );
   }
 }
-
 
 /**
  * 分割文件,取消后缀名
@@ -68,39 +71,34 @@ function splitFilename(filename, extName = '.md') {
  * @return {*} 返回当前标题树及转换好的html字符串
  */
 function markIt(content) {
-
-  const md = new MarkdownIt();
   const titleTree = new StorageTitle();
 
-  md.core.ruler.push('attachId', (state) => {
+  md.core.ruler.push('attachId', state => {
     const tags = [ 'h1', 'h2', 'h3' ];
     const tokens = state.tokens;
 
     for (let i = 0; i < tokens.length; i++) {
-      const Token = tokens[ i ];
+      const Token = tokens[i];
       const tag = Token.tag;
 
       if (tags.includes(tag) && Token.type === 'heading_open') {
-        const contentToken = tokens[ i + 1 ];
+        const contentToken = tokens[i + 1];
         let content = '';
         if (contentToken.type === 'inline' && contentToken.tag === '') {
           content = contentToken.content;
         }
 
+        // 给 h1,h2.h3设置锚点ID
         Token.attrs = [
-          [ 'id', titleTree.setTitleTree(Number(tag.slice(1)), content) ],
+          ['id', titleTree.setTitleTree(Number(tag.slice(1)), content)],
         ];
       }
     }
   });
   return {
-    html: md.renderer(content),
+    html: md.render(content),
     tree: titleTree.titleTree,
   };
 }
 
-
-export {
-  splitFilename,
-  markIt,
-};
+export { splitFilename, markIt };
