@@ -90,7 +90,7 @@ function markIt(content) {
 
         // 给 h1,h2.h3设置锚点ID
         Token.attrs = [
-          ['id', titleTree.setTitleTree(Number(tag.slice(1)), content)],
+          [ 'id', titleTree.setTitleTree(Number(tag.slice(1)), content) ],
         ];
       }
     }
