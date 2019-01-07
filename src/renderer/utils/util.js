@@ -1,11 +1,16 @@
 const path = require('path');
 import MarkdownIt from 'markdown-it';
+
 const md = new MarkdownIt();
 
 // ------ 标题组件树 ------
 class StorageTitle {
   constructor() {
-    this.titleTree = [];
+    // h0是为了保持统一格式,简化代码
+    this.h0LevelTree = {
+      href: '',
+      children: [],
+    };
     this.h1LevelTree = null;
   }
 
@@ -16,27 +21,25 @@ class StorageTitle {
    * @return {*} 锚点内容
    */
   setTitleTree(level, content) {
-    if (level === 1) {
-      const href = StorageTitle.formatHref(content);
-      this.h1LevelTree = {
-        tag: 'h1',
-        content,
-        href,
+    let levelTree = this[ 'h' + (level - 1) + 'LevelTree' ];
+    if (!levelTree) {
+      levelTree = {
+        href: '',
+        tag: '',
+        content: '',
         children: [],
       };
-      this.titleTree.push(this.h1LevelTree);
-      return href;
+      this[ 'h' + (level - 2) + 'LevelTree' ].children.push(levelTree);
     }
-
-    const { children, href } = this['h' + (level - 1) + 'LevelTree'];
+    const { children, href } = levelTree;
     const nowHref = StorageTitle.formatHref(href, content);
-    this['h' + level + 'LevelTree'] = {
+    this[ 'h' + level + 'LevelTree' ] = {
       tag: 'h' + level,
       content,
       href: nowHref,
       children: [],
     };
-    children.push(this['h' + level + 'LevelTree']);
+    children.push(this[ 'h' + level + 'LevelTree' ]);
     return nowHref;
   }
 
@@ -78,11 +81,11 @@ function markIt(content) {
     const tokens = state.tokens;
 
     for (let i = 0; i < tokens.length; i++) {
-      const Token = tokens[i];
+      const Token = tokens[ i ];
       const tag = Token.tag;
 
       if (tags.includes(tag) && Token.type === 'heading_open') {
-        const contentToken = tokens[i + 1];
+        const contentToken = tokens[ i + 1 ];
         let content = '';
         if (contentToken.type === 'inline' && contentToken.tag === '') {
           content = contentToken.content;
@@ -97,7 +100,7 @@ function markIt(content) {
   });
   return {
     html: md.render(content),
-    tree: titleTree.titleTree,
+    tree: titleTree.h0LevelTree.children,
   };
 }
 
