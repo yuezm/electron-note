@@ -9,6 +9,8 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path')
     .join(__dirname, '/static')
     .replace(/\\/g, '\\\\');
+} else {
+  global.__static = path.join(__dirname, '../../static');
 }
 
 let mainWindow;
@@ -23,7 +25,7 @@ function createWindow() {
     useContentSize: true,
     width: 1500,
     frame: true,
-    icon: path.join(__dirname, '../../static/icons/logo.png'),
+    icon: path.join(global.__static, 'icons/logo.png'),
   });
 
   mainWindow.loadURL(winURL);
@@ -34,7 +36,8 @@ function createWindow() {
 
 // 设置托盘样式及托盘菜单
 function createTray() {
-  const tray = new Tray(path.join(__dirname, '../../static/icons/logo.png'));
+  console.log(path.join(global.__static, 'icons/logo.png'));
+  const tray = new Tray(path.join(global.__static, 'icons/logo.png'));
   tray.setToolTip('Note');
   tray.setContextMenu(
     Menu.buildFromTemplate([
