@@ -1,4 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Tray, Menu } from 'electron';
+
+const path = require('path');
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -16,25 +18,50 @@ const winURL =
     : `file://${__dirname}/index.html`;
 
 function createWindow() {
-  /**
-   * Initial window options
-   */
-  BrowserWindow.addDevToolsExtension('/home/yzm/.config/google-chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/4.1.5_0');
   mainWindow = new BrowserWindow({
     height: 830,
     useContentSize: true,
     width: 1500,
     frame: true,
+    icon: path.join(__dirname, '../../static/icons/logo.png'),
   });
 
   mainWindow.loadURL(winURL);
-
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
 
-app.on('ready', createWindow);
+// 设置托盘样式及托盘菜单
+function createTray() {
+  const tray = new Tray(path.join(__dirname, '../../static/icons/logo.png'));
+  tray.setToolTip('Note');
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      {
+        label: 'Show',
+        type: 'normal',
+        click() {
+          app.focus();
+        },
+      },
+      {
+        label: 'Exit',
+        type: 'normal',
+        click() {
+          app.quit();
+        },
+      },
+    ])
+  );
+}
+
+function initApp() {
+  createTray();
+  createWindow();
+}
+
+app.on('ready', initApp);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -49,7 +76,6 @@ app.on('activate', () => {
 });
 
 // 读取指定目录的所有md文件
-
 
 /**
  * Auto Updater

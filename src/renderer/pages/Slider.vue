@@ -1,6 +1,6 @@
 <template>
   <div class="menu-container">
-    <Menu theme="light" mode="horizontal" class="menu-list" @on-select="selectMenu">
+    <Menu :active-name="defaultActiveName" theme="light" mode="horizontal" class="menu-list" @on-select="selectMenu">
       <menu-item :name="item.name" v-for="(item, index) in mineNoteList" :key="index">
         <Icon type="logo-markdown" class="slider-icon"/>
         {{item.label}}
@@ -12,7 +12,6 @@
 
 const fs = require('fs');
 import { splitFilename } from '../utils/util';
-// import { mapActions, mapState } from 'vuex';
 
 const targetDir = fs.readdirSync('/home/yzm/yzm/NOTE/docs');
 const fileList = targetDir.map(item => {
@@ -29,12 +28,18 @@ export default {
   data() {
     return {
       mineNoteList: fileList,
+      defaultActiveName: '',
     };
   },
   methods: {
     selectMenu(name) {
       this.$store.commit('SET_TITLE', name);
     },
+  },
+  created() {
+    const name = this.mineNoteList[0].name;
+    this.defaultActiveName = name;
+    this.selectMenu(name);
   },
 };
 </script>

@@ -1,12 +1,11 @@
 const path = require('path');
+const crypto = require('crypto');
 import MarkdownIt from 'markdown-it';
-
-const md = new MarkdownIt();
 
 // ------ 标题组件树 ------
 class StorageTitle {
   constructor() {
-    // h0是为了保持统一格式,简化代码
+    // h0是为了保持统一格式,简化代码,追后返回值是它的children
     this.h0LevelTree = {
       href: '',
       children: [],
@@ -21,7 +20,7 @@ class StorageTitle {
    * @return {*} 锚点内容
    */
   setTitleTree(level, content) {
-    let levelTree = this[ 'h' + (level - 1) + 'LevelTree' ];
+    let levelTree = this['h' + (level - 1) + 'LevelTree'];
     if (!levelTree) {
       levelTree = {
         href: '',
@@ -29,17 +28,17 @@ class StorageTitle {
         content: '',
         children: [],
       };
-      this[ 'h' + (level - 2) + 'LevelTree' ].children.push(levelTree);
+      this['h' + (level - 2) + 'LevelTree'].children.push(levelTree);
     }
     const { children, href } = levelTree;
     const nowHref = StorageTitle.formatHref(href, content);
-    this[ 'h' + level + 'LevelTree' ] = {
+    this['h' + level + 'LevelTree'] = {
       tag: 'h' + level,
       content,
       href: nowHref,
       children: [],
     };
-    children.push(this[ 'h' + level + 'LevelTree' ]);
+    children.push(this['h' + level + 'LevelTree']);
     return nowHref;
   }
 
@@ -73,19 +72,19 @@ function splitFilename(filename, extName = '.md') {
  * @param {string} content md字符串
  * @return {*} 返回当前标题树及转换好的html字符串
  */
-function markIt(content) {
+function makeMdToHtml() {
+  const md = new MarkdownIt();
   const titleTree = new StorageTitle();
-
   md.core.ruler.push('attachId', state => {
     const tags = [ 'h1', 'h2', 'h3' ];
     const tokens = state.tokens;
 
     for (let i = 0; i < tokens.length; i++) {
-      const Token = tokens[ i ];
+      const Token = tokens[i];
       const tag = Token.tag;
 
       if (tags.includes(tag) && Token.type === 'heading_open') {
-        const contentToken = tokens[ i + 1 ];
+        const contentToken = tokens[i + 1];
         let content = '';
         if (contentToken.type === 'inline' && contentToken.tag === '') {
           content = contentToken.content;
@@ -98,10 +97,25 @@ function markIt(content) {
       }
     }
   });
-  return {
-    html: md.render(content),
-    tree: titleTree.h0LevelTree.children,
+  return function(content) {
+    titleTree.h0LevelTree.children = [];
+    return {
+      html: md.render(content),
+      tree: titleTree.h0LevelTree.children,
+    };
   };
 }
 
-export { splitFilename, markIt };
+/**
+ *
+ * @param {string} data 所要计算的字符串
+ * @return {string} 16进制的hash值
+ */
+function computeHash(data) {
+  const sec = crypto.createHash('sha1');
+  sec.update(data);
+  return sec.digest('hex');
+}
+
+export { splitFilename, computeHash };
+export const markIt = makeMdToHtml();
