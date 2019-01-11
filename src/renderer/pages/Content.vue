@@ -12,7 +12,7 @@ import { markIt, computeHash } from '../utils/util';
 
 const path = require('path');
 const fs = require('fs');
-const { remote } = require('electron');
+// const { remote } = require('electron');
 import { mapGetters } from 'vuex';
 
 export default {
@@ -20,6 +20,7 @@ export default {
   computed: {
     ...mapGetters({
       title: 'GET_TITLE',
+      baseDir: 'GET_BASE_DIR',
     }),
   },
   watch: {
@@ -39,7 +40,7 @@ export default {
   },
   methods: {
     getFileAndHandle(filename) {
-      const p = path.join('/home/yzm/yzm/NOTE/docs', filename) + '.md';
+      const p = path.join(this.baseDir, filename) + '.md';
       fs.readFile(p, (error, data) => {
         if (!error) {
           const readString = data.toString();
@@ -66,8 +67,8 @@ export default {
       return str + '</ul>';
     },
   },
-  mounted() {
-    remote.getCurrentWindow().on('focus', () => {
+  created() {
+    this.$root.$on('WINDOW_FOCUS', () => {
       this.getFileAndHandle(this.title);
     });
   },

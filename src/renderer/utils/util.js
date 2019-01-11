@@ -5,7 +5,7 @@ import MarkdownIt from 'markdown-it';
 // ------ 标题组件树 ------
 class StorageTitle {
   constructor() {
-    // h0是为了保持统一格式,简化代码,追后返回值是它的children
+    // h0LevelTree是为了保持统一格式,简化代码,最后返回值是它的children
     this.h0LevelTree = {
       href: '',
       children: [],
@@ -75,6 +75,8 @@ function splitFilename(filename, extName = '.md') {
 function makeMdToHtml() {
   const md = new MarkdownIt();
   const titleTree = new StorageTitle();
+
+  // 增加关联ID的规则
   md.core.ruler.push('attachId', state => {
     const tags = [ 'h1', 'h2', 'h3' ];
     const tokens = state.tokens;
@@ -83,7 +85,9 @@ function makeMdToHtml() {
       const Token = tokens[i];
       const tag = Token.tag;
 
+      // 检测是否为开始标签,只有开始标签才需要绑定关联ID
       if (tags.includes(tag) && Token.type === 'heading_open') {
+        // 开始标签紧接是文字内容
         const contentToken = tokens[i + 1];
         let content = '';
         if (contentToken.type === 'inline' && contentToken.tag === '') {

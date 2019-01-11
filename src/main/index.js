@@ -1,6 +1,8 @@
 import { app, BrowserWindow, Tray, Menu } from 'electron';
 
 const path = require('path');
+const fs = require('fs');
+const os = require('os');
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -36,7 +38,6 @@ function createWindow() {
 
 // 设置托盘样式及托盘菜单
 function createTray() {
-  console.log(path.join(global.__static, 'icons/logo.png'));
   const tray = new Tray(path.join(global.__static, 'icons/logo.png'));
   tray.setToolTip('Note');
   tray.setContextMenu(
@@ -59,9 +60,27 @@ function createTray() {
   );
 }
 
+// 设置配置文件,及文件存储的目录
+function createConfig() {
+  const configDirPath = path.join(os.homedir(), 'electron-note');
+  if (!fs.existsSync(configDirPath)) {
+    fs.mkdirSync(configDirPath);
+    fs.mkdirSync(path.join(configDirPath, 'docs'));
+  }
+
+  const configPath = path.join(configDirPath, 'config.json');
+  if (!fs.existsSync(configPath)) {
+    fs.writeFileSync(
+      configPath,
+      `{"baseDir": "${path.join(configDirPath, 'docs')}"}`
+    );
+  }
+}
+
 function initApp() {
   createTray();
   createWindow();
+  createConfig();
 }
 
 app.on('ready', initApp);
@@ -77,8 +96,6 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// 读取指定目录的所有md文件
 
 /**
  * Auto Updater
