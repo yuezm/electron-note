@@ -37,13 +37,15 @@ function createWindow() {
 
   mainWindow.loadURL(winURL);
 
+  createTray(mainWindow);
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
 
 // 设置托盘样式及托盘菜单
-function createTray() {
+function createTray(win) {
   const tray = new Tray(logoUrl);
   tray.setToolTip('Note');
   tray.setContextMenu(
@@ -52,7 +54,8 @@ function createTray() {
         label: 'Show',
         type: 'normal',
         click() {
-          app.focus();
+          win.show();
+          win.focus();
         },
       },
       {
@@ -84,7 +87,6 @@ function createConfig() {
 }
 
 function initApp() {
-  createTray();
   createWindow();
   createConfig();
 }
