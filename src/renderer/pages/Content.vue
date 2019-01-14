@@ -49,6 +49,7 @@ export default {
           }
           this.contentHash = readHash;
           const { html, tree } = markIt(readString);
+
           this.html = html;
           this.navTree = this.createNavTree(tree);
         }
@@ -78,16 +79,14 @@ export default {
 @import "../assets/style/global.less";
 
 .content-container {
-  padding: 0 10px;
-}
-
-.content {
-  margin-left: 300px;
+  padding: 70px 0 0 350px;
 }
 
 .nav-tree {
+  position: fixed;
+  top: 70px;
+  left: 0;
   width: 260px;
-  float: left;
   padding: 10px 8px;
   height: 100%;
   border-radius: 5px;

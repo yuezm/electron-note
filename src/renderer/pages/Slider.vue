@@ -70,15 +70,20 @@ export default {
   },
 };
 </script>
-<style scoped lang="less">
+<style lang="less">
 @import "../assets/style/global.less";
+
+.menu-container{
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 
 .menu-container .menu-list {
   background: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5);
-  border-color: #1995dc;
-  border-bottom: 1px solid #178acc;
   &::after {
     content: "";
+    display: none;
   }
 
   li {

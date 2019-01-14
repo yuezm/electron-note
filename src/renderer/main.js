@@ -17,11 +17,10 @@ if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.config.productionTip = false;
 
 function readConfig() {
-  const { baseDir } = JSON.parse(
-    fs.readFileSync(path.join(os.homedir(), 'electron-note/config.json'))
-  );
+  const { baseDir } = JSON.parse(fs.readFileSync(path.join(os.homedir(), 'electron-note/config.json')));
   store.commit('SET_BASE_DIR', baseDir);
 }
+
 readConfig();
 /* eslint-disable no-new */
 const vm = new Vue({
@@ -31,6 +30,7 @@ const vm = new Vue({
 }).$mount('#app');
 
 // --------------- 事件监听 ---------------
-remote.getCurrentWindow().on('focus', () => {
-  vm.$emit('WINDOW_FOCUS');
-});
+remote.getCurrentWindow()
+  .on('focus', () => {
+    vm.$emit('WINDOW_FOCUS');
+  });

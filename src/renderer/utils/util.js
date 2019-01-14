@@ -10,7 +10,7 @@ class StorageTitle {
       href: '',
       children: [],
     };
-    this.h1LevelTree = null;
+    this.setDefault();
   }
 
   /**
@@ -40,6 +40,12 @@ class StorageTitle {
     };
     children.push(this['h' + level + 'LevelTree']);
     return nowHref;
+  }
+
+  setDefault() {
+    this.h0LevelTree.children = [];
+    this.h1LevelTree = null;
+    this.h2LevelTree = null;
   }
 
   /**
@@ -102,7 +108,7 @@ function makeMdToHtml() {
     }
   });
   return function(content) {
-    titleTree.h0LevelTree.children = [];
+    titleTree.setDefault();
     return {
       html: md.render(content),
       tree: titleTree.h0LevelTree.children,
