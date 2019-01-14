@@ -12,11 +12,10 @@ import { markIt, computeHash } from '../utils/util';
 
 const path = require('path');
 const fs = require('fs');
-// const { remote } = require('electron');
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'Content',
+  name: 'electron-note-content',
   computed: {
     ...mapGetters({
       title: 'GET_TITLE',

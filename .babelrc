@@ -3,58 +3,37 @@
   "env": {
     "test": {
       "presets": [
-        [
-          "env",
-          {
-            "targets": { "node": 7 }
-          }
-        ],
+        ["env", {
+          "targets": { "node": 7 }
+        }],
         "stage-0"
       ],
       "plugins": ["istanbul"]
     },
     "main": {
       "presets": [
-        [
-          "env",
-          {
-            "targets": { "node": 7 }
-          }
-        ],
+        ["env", {
+          "targets": { "node": 7 }
+        }],
         "stage-0"
       ]
     },
     "renderer": {
       "presets": [
-        [
-          "env",
-          {
-            "modules": false
-          }
-        ],
+        ["env", {
+          "modules": false
+        }],
         "stage-0"
       ]
     },
     "web": {
       "presets": [
-        [
-          "env",
-          {
-            "modules": false
-          }
-        ],
+        ["env", {
+          "modules": false
+        }],
         "stage-0"
       ]
     }
   },
-  "plugins": [
-    "transform-runtime",
-    // [
-    //   "import",
-    //   {
-    //     "libraryName": "iview",
-    //     "libraryDirectory": "src/components"
-    //   }
-    // ]
-  ]
+  "plugins": ["transform-runtime"]
 }

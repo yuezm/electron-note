@@ -15,7 +15,7 @@ const fs = require('fs');
 
 
 export default {
-  name: 'Slider',
+  name: 'electron-note-slider',
   computed: {
     ...mapGetters({
       baseDir: 'GET_BASE_DIR',

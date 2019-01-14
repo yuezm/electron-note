@@ -10,7 +10,7 @@ import Slider from './pages/Slider.vue';
 import Content from './pages/Content.vue';
 
 export default {
-  name: 'electron-note',
+  name: 'electron-note-app',
   components: {
     Slider,
     Content,

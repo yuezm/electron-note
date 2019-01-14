@@ -3,34 +3,38 @@ import { app, BrowserWindow, Tray, Menu } from 'electron';
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
+let logoUrl;
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path')
-    .join(__dirname, '/static')
-    .replace(/\\/g, '\\\\');
+  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
+  logoUrl = path.join(global.__static, 'icon.png');
 } else {
-  global.__static = path.join(__dirname, '../../static');
+  logoUrl = path.join(__dirname, '../../static/icon.png');
 }
 
 let mainWindow;
-const winURL =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:9080'
-    : `file://${__dirname}/index.html`;
+const winURL = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:9080'
+  : `file://${__dirname}/index.html`;
+
 
 function createWindow() {
+  /**
+   * Initial window options
+   */
   mainWindow = new BrowserWindow({
-    height: 830,
+    height: 563,
     useContentSize: true,
-    width: 1500,
-    frame: true,
-    icon: path.join(global.__static, 'icons/logo.png'),
+    width: 1000,
+    icon: logoUrl,
   });
 
   mainWindow.loadURL(winURL);
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
@@ -38,7 +42,7 @@ function createWindow() {
 
 // 设置托盘样式及托盘菜单
 function createTray() {
-  const tray = new Tray(path.join(global.__static, 'icons/logo.png'));
+  const tray = new Tray(logoUrl);
   tray.setToolTip('Note');
   tray.setContextMenu(
     Menu.buildFromTemplate([
