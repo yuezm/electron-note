@@ -60,9 +60,13 @@ export default {
     this.initNavList();
 
     // 选中第一个文件为默认打开项
-    const name = this.mineNoteList.length > 0 ? this.mineNoteList[ 0 ].name : '';
-    this.defaultActiveName = name;
-    this.selectMenu(name);
+    if (this.$store.getters.GET_TITLE === '') {
+      const name = this.mineNoteList.length > 0 ? this.mineNoteList[ 0 ].name : '';
+      this.defaultActiveName = name;
+      this.selectMenu(name);
+    } else {
+      this.defaultActiveName = this.$store.getters.GET_TITLE;
+    }
 
     this.$root.$on('WINDOW_FOCUS', () => {
       this.initNavList();
@@ -73,7 +77,7 @@ export default {
 <style lang="less">
 @import "../../assets/style/global.less";
 
-.menu-container{
+.menu-container {
   position: fixed;
   top: 0;
   width: 100%;
