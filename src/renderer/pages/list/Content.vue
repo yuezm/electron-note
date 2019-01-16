@@ -1,21 +1,31 @@
 <template>
   <div class="content-container">
-    <div class="nav-tree" v-html="navTree"></div>
-
-    <div v-html="html" class="content">
+    <div class="top-title">
+      <h1>{{title}}</h1>
+      <div>
+        <Button class="content-edit-button" type="primary" icon="ios-create" @click="turnToEdit">编辑</Button>
+      </div>
     </div>
+
+    <NavTree :navTree="navTree" />
+
+    <div v-html="html" class="content"></div>
   </div>
 </template>
 
 <script>
-import { markIt, computeHash } from '../utils/util';
-
 const path = require('path');
 const fs = require('fs');
 import { mapGetters } from 'vuex';
 
+import { markIt, computeHash } from '../../utils/util';
+import NavTree from './content/NavTree.vue';
+
 export default {
   name: 'electron-note-content',
+  components: {
+    NavTree,
+  },
   computed: {
     ...mapGetters({
       title: 'GET_TITLE',
@@ -33,7 +43,7 @@ export default {
   data() {
     return {
       html: '',
-      navTree: '',
+      navTree: [],
       contentHash: '', // 记录字符串hash值
     };
   },
@@ -51,20 +61,14 @@ export default {
           const { html, tree } = markIt(readString);
 
           this.html = html;
-          this.navTree = this.createNavTree(tree);
+          this.navTree = tree;
         }
       });
     },
-
-    createNavTree(treeList) {
-      if (!treeList || treeList.length < 1) {
-        return '';
-      }
-      let str = '<ul>';
-      treeList.forEach(element => {
-        str += `<li><a href="#${element.href}">${element.content}</a>${this.createNavTree(element.children)}</li>`;
+    turnToEdit() {
+      this.$router.push({
+        path: '/edit',
       });
-      return str + '</ul>';
     },
   },
   created() {
@@ -76,19 +80,20 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/style/global.less";
+@import "../../assets/style/global.less";
 
 .content-container {
+  margin-right: 10px;
   padding: 70px 0 0 350px;
 }
 
 .nav-tree {
   position: fixed;
   top: 70px;
-  left: 0;
+  left: 10px;
+  bottom: 10px;
   width: 260px;
   padding: 10px 8px;
-  height: 100%;
   border-radius: 5px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
@@ -163,8 +168,21 @@ export default {
       vertical-align: middle;
     }
   }
+}
 
-  h3 {
+.top-title {
+  height: 80px;
+  line-height: 60px;
+  h1 {
+    float: left;
   }
+  & > div {
+    float: right
+  }
+}
+
+.content-edit-button {
+  font-size: 14px;
+  background-color: @CONTENT_TREE_H3;
 }
 </style>
