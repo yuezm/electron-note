@@ -3,15 +3,19 @@ import iView from 'iview';
 import { remote } from 'electron';
 import './assets/style/main.less';
 import 'iview/dist/styles/iview.css';
+import 'mavon-editor/dist/css/index.css';
+import mavonEditor from 'mavon-editor';
 
 import App from './App';
 import store from './store';
+import router from './router';
 
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
 Vue.use(iView);
+Vue.use(mavonEditor);
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'));
 Vue.config.productionTip = false;
@@ -26,6 +30,7 @@ readConfig();
 const vm = new Vue({
   components: { App },
   store,
+  router,
   template: '<App/>',
 }).$mount('#app');
 

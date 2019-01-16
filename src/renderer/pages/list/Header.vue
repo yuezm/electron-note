@@ -10,12 +10,12 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { splitFilename, computeHash } from '../utils/util';
+import { splitFilename, computeHash } from '../../utils/util';
 const fs = require('fs');
 
 
 export default {
-  name: 'electron-note-slider',
+  name: 'electron-note-header',
   computed: {
     ...mapGetters({
       baseDir: 'GET_BASE_DIR',
@@ -71,7 +71,7 @@ export default {
 };
 </script>
 <style lang="less">
-@import "../assets/style/global.less";
+@import "../../assets/style/global.less";
 
 .menu-container{
   position: fixed;

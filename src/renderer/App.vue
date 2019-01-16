@@ -1,22 +1,15 @@
 <template>
   <div id="app">
-    <Slider></Slider>
-    <Content></Content> 
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Slider from './pages/Slider.vue';
-import Content from './pages/Content.vue';
 
 export default {
   name: 'electron-note-app',
-  components: {
-    Slider,
-    Content,
-  },
 };
 </script>
 
-<style>
+<style scoped>
 </style>
