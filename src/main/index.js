@@ -1,8 +1,9 @@
-import { app, BrowserWindow, Tray, Menu } from 'electron';
+import { app, BrowserWindow } from 'electron';
 
 const path = require('path');
-const fs = require('fs');
-const os = require('os');
+
+import NoteTray from './lib/Tray';
+import NoteConfig from './lib/Config';
 
 /**
  * Set `__static` path to static files in production
@@ -19,10 +20,10 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow;
-const winURL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:9080'
-  : `file://${__dirname}/index.html`;
-
+const winURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:9080'
+    : `file://${__dirname}/index.html`;
 
 function createWindow() {
   /**
@@ -36,62 +37,17 @@ function createWindow() {
   });
 
   mainWindow.loadURL(winURL);
-
-  createTray(mainWindow);
-
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+
+  new NoteTray(mainWindow, logoUrl);
 }
 
-// 设置托盘样式及托盘菜单
-function createTray(win) {
-  const tray = new Tray(logoUrl);
-  tray.setToolTip('Note');
-  tray.setContextMenu(
-    Menu.buildFromTemplate([
-      {
-        label: 'Show',
-        type: 'normal',
-        click() {
-          win.show();
-          win.focus();
-        },
-      },
-      {
-        label: 'Exit',
-        type: 'normal',
-        click() {
-          app.quit();
-        },
-      },
-    ])
-  );
-}
-
-// 设置配置文件,及文件存储的目录
-function createConfig() {
-  const configDirPath = path.join(os.homedir(), 'electron-note');
-  if (!fs.existsSync(configDirPath)) {
-    fs.mkdirSync(configDirPath);
-    fs.mkdirSync(path.join(configDirPath, 'docs'));
-  }
-
-  const configPath = path.join(configDirPath, 'config.json');
-  if (!fs.existsSync(configPath)) {
-    fs.writeFileSync(
-      configPath,
-      `{"baseDir": "${path.join(configDirPath, 'docs')}"}`
-    );
-  }
-}
-
-function initApp() {
+app.on('ready', () => {
   createWindow();
-  createConfig();
-}
-
-app.on('ready', initApp);
+  new NoteConfig();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
