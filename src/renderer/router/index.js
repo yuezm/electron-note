@@ -3,17 +3,20 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
+import List from '../pages/List.vue';
+import Edit from '../pages/Edit.vue';
+
 export default new Router({
   routes: [
     {
       path: '/',
       name: 'List',
-      component: require('@/pages/List').default,
+      component: List,
     },
     {
-      path: '/edit',
+      path: '/edit/:title',
       name: 'Edit',
-      component: require('@/pages/Edit').default,
+      component: Edit,
     },
   ],
 });

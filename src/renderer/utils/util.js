@@ -24,7 +24,7 @@ function makeMdToHtml() {
 
   // 增加关联ID的规则
   md.core.ruler.push('attachId', state => {
-    const tags = ['h1', 'h2', 'h3'];
+    const tags = [ 'h1', 'h2', 'h3' ];
     const tokens = state.tokens;
 
     for (let i = 0; i < tokens.length; i++) {
@@ -42,7 +42,7 @@ function makeMdToHtml() {
 
         // 给 h1,h2.h3设置锚点ID
         Token.attrs = [
-          ['id', titleTree.setTitleTree(Number(tag.slice(1)), content)],
+          [ 'id', titleTree.setTitleTree(Number(tag.slice(1)), content) ],
         ];
       }
     }

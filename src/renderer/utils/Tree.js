@@ -27,7 +27,7 @@ class Tree {
       this['h' + (level - 2) + 'LevelTree'].children.push(levelTree);
     }
     const { children, href } = levelTree;
-    const nowHref = StorageTitle.formatHref(href, content);
+    const nowHref = Tree.formatHref(href, content);
     this['h' + level + 'LevelTree'] = {
       tag: 'h' + level,
       content,

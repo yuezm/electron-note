@@ -67,7 +67,7 @@ export default {
     },
     turnToEdit() {
       this.$router.push({
-        path: '/edit',
+        path: `/edit/${this.title}`,
       });
     },
   },
@@ -177,7 +177,7 @@ export default {
     float: left;
   }
   & > div {
-    float: right
+    float: right;
   }
 }
 

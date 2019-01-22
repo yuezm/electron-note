@@ -4,6 +4,7 @@ const path = require('path');
 
 import NoteTray from './lib/Tray';
 import NoteConfig from './lib/Config';
+import NoteMenu from './lib/Menu';
 
 /**
  * Set `__static` path to static files in production
@@ -40,7 +41,7 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-
+  new NoteMenu(mainWindow);
   new NoteTray(mainWindow, logoUrl);
 }
 

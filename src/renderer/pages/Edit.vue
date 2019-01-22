@@ -1,12 +1,12 @@
 <template>
   <div class="edit-container">
     <div class="edit-title">
-      <Input placeholder="请输入title" :value="title" style="width: 100%" @input="inputTitle" />
+      <Input placeholder="请输入title" v-model="title" style="width: 100%" />
       <Button class="edit-confirm" type="info" @click="saveEdit">保存</Button>
       <Button type="default" @click="cancelEdit">取消</Button>
     </div>
     <div class="edit-markdown">
-      <mavon-editor v-model="value" @save="saveFile" />
+      <mavon-editor v-model="mdContent" @save="saveFile" />
     </div>
   </div>
 </template>
@@ -19,13 +19,15 @@ export default {
   name: 'electron-note-edit',
   computed: {
     ...mapGetters({
-      title: 'GET_TITLE',
       baseDir: 'GET_BASE_DIR',
     }),
   },
   data() {
     return {
-      value: '',
+      title: '',
+      oldTitle: '',
+
+      mdContent: '',
       titleChanged: '',
     };
   },
@@ -35,7 +37,7 @@ export default {
         return;
       }
       const p = path.join(this.baseDir, filePath + '.md');
-      this.value = fs.readFileSync(p)
+      this.mdContent = fs.readFileSync(p)
         .toString();
     },
 
@@ -43,31 +45,30 @@ export default {
       if (!this.title) {
         return;
       }
-
-      if (this.titleChanged !== '' && this.titleChanged !== this.title) {
-        fs.writeFileSync(path.join(this.baseDir, this.titleChanged + '.md'), v);
-        fs.unlinkSync(path.join(this.baseDir, this.title + '.md'));
-        this.$store.commit('SET_TITLE', this.titleChanged);
-      } else {
-        fs.writeFileSync(path.join(this.baseDir, this.title + '.md'), v);
+      fs.writeFileSync(path.join(this.baseDir, this.title + '.md'), v);
+      if (this.oldTitle !== this.title && this.oldTitle !== '') {
+        fs.unlinkSync(path.join(this.baseDir, this.oldTitle + '.md'));
+        this.$store.commit('SET_TITLE', this.title);
       }
       this.$router.push('/');
     },
 
     saveEdit() {
-      this.saveFile(this.value);
+      this.saveFile(this.mdContent);
     },
 
     cancelEdit() {
       this.$router.push('/');
     },
-
-    inputTitle(v) {
-      this.titleChanged = v;
-    },
   },
   created() {
-    this.readFile(this.title);
+    this.title = this.$route.params.title;
+    if (this.title !== 'add') {
+      this.readFile(this.title);
+      this.oldTitle = this.title;
+    } else {
+      this.title = '';
+    }
   },
 };
 </script>
