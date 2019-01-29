@@ -1,5 +1,6 @@
 const path = require('path');
 const crypto = require('crypto');
+const fs = require('fs');
 import MarkdownIt from 'markdown-it';
 import Tree from './Tree';
 
@@ -28,13 +29,13 @@ function makeMdToHtml() {
     const tokens = state.tokens;
 
     for (let i = 0; i < tokens.length; i++) {
-      const Token = tokens[i];
+      const Token = tokens[ i ];
       const tag = Token.tag;
 
       // 检测是否为开始标签,只有开始标签才需要绑定关联ID
       if (tags.includes(tag) && Token.type === 'heading_open') {
         // 开始标签紧接是文字内容
-        const contentToken = tokens[i + 1];
+        const contentToken = tokens[ i + 1 ];
         let content = '';
         if (contentToken.type === 'inline' && contentToken.tag === '') {
           content = contentToken.content;
@@ -67,5 +68,22 @@ function computeHash(data) {
   return sec.digest('hex');
 }
 
-export { splitFilename, computeHash };
+function readBaseDir(basePath, dirPath = '') {
+  const targetDir = fs.readdirSync(basePath);
+
+  return targetDir.map(item => {
+    const baseName = splitFilename(item);
+    const menuInfo = {
+      name: path.join(dirPath, baseName),
+      label: baseName,
+    };
+    if (!item.endsWith('.md')) {
+      menuInfo.type = 'subMenu';
+      menuInfo.children = readBaseDir(path.join(basePath, item), item);
+    }
+    return menuInfo;
+  });
+}
+
+export { splitFilename, computeHash, readBaseDir };
 export const markIt = makeMdToHtml();

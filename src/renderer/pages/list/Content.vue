@@ -1,13 +1,13 @@
 <template>
   <div class="content-container">
     <div class="top-title">
-      <h1>{{title}}</h1>
+      <h1 :id="title">{{title}}</h1>
       <div>
         <Button class="content-edit-button" type="primary" icon="ios-create" @click="turnToEdit">编辑</Button>
       </div>
     </div>
 
-    <NavTree :navTree="navTree" />
+    <NavTree :navTree="navTree"/>
 
     <div v-html="html" class="content"></div>
   </div>
@@ -53,11 +53,13 @@ export default {
       fs.readFile(p, (error, data) => {
         if (!error) {
           const readString = data.toString();
+          // 防止无效计算和渲染
           const readHash = computeHash(readString);
           if (readHash === this.contentHash) {
             return;
           }
           this.contentHash = readHash;
+
           const { html, tree } = markIt(readString);
 
           this.html = html;
@@ -67,7 +69,7 @@ export default {
     },
     turnToEdit() {
       this.$router.push({
-        path: `/edit/${this.title}`,
+        path: `/edit/${btoa(this.title)}`,
       });
     },
   },
@@ -80,109 +82,110 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../assets/style/global.less";
+  @import "../../assets/style/global.less";
 
-.content-container {
-  margin-right: 10px;
-  padding: 70px 0 0 350px;
-}
-
-.nav-tree {
-  position: fixed;
-  top: 70px;
-  left: 10px;
-  bottom: 10px;
-  width: 260px;
-  padding: 10px 8px;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
-
-  li {
-    margin-bottom: 4px;
-    list-style: none;
+  .content-container {
+    margin-right: 10px;
+    padding: 70px 0 0 350px;
   }
 
-  & > ul > li {
-    font-size: 22px;
-    font-weight: bold;
-    a {
-      color: @CONTENT_TREE_H1;
+  .nav-tree {
+    position: fixed;
+    z-index: -1;
+    top: 70px;
+    left: 10px;
+    bottom: 10px;
+    width: 260px;
+    padding: 10px 8px;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+
+    li {
+      margin-bottom: 4px;
+      list-style: none;
     }
+
     & > ul > li {
-      padding-left: 8px;
-      font-size: 18px;
-      font-weight: normal;
+      font-size: 22px;
+      font-weight: bold;
       a {
-        color: @CONTENT_TREE_H2;
+        color: @CONTENT_TREE_H1;
       }
       & > ul > li {
         padding-left: 8px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        font-size: 18px;
         font-weight: normal;
-        font-size: 14px;
         a {
-          color: @CONTENT_TREE_H3;
+          color: @CONTENT_TREE_H2;
+        }
+        & > ul > li {
+          padding-left: 8px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          font-weight: normal;
+          font-size: 14px;
+          a {
+            color: @CONTENT_TREE_H3;
+          }
         }
       }
     }
   }
-}
 
-.content {
-  color: @MAIN_FONT_COLOR;
-  h1 {
-    font-size: 40px;
-  }
-  h2 {
-    font-size: 32px;
-    font-weight: normal;
-    color: @CONTENT_TREE_H2;
-  }
+  .content {
+    color: @MAIN_FONT_COLOR;
+    h1 {
+      font-size: 40px;
+    }
+    h2 {
+      font-size: 32px;
+      font-weight: normal;
+      color: @CONTENT_TREE_H2;
+    }
 
-  h3 {
-    font-size: 18px;
-    padding: 5px 0;
-    color: @CONTENT_TREE_H3;
-  }
-  p {
-    line-height: 20px;
-    font-size: 14px;
-  }
+    h3 {
+      font-size: 18px;
+      padding: 5px 0;
+      color: @CONTENT_TREE_H3;
+    }
+    p {
+      line-height: 20px;
+      font-size: 14px;
+    }
 
-  li {
-    margin-bottom: 5px;
-  }
-  pre {
-    padding: 10px;
-    background: #f8f8f8;
-    border: solid 1px #e1e4e5;
-    border-radius: 4px;
-    overflow-x: auto;
-    font-size: 14px;
-    code {
-      font-family: Ubuntu Mono, monospace, serif;
-      color: @MAIN_CODE_COLOR;
-      vertical-align: middle;
+    li {
+      margin-bottom: 5px;
+    }
+    pre {
+      padding: 10px;
+      background: #f8f8f8;
+      border: solid 1px #e1e4e5;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 14px;
+      code {
+        font-family: Ubuntu Mono, monospace, serif;
+        color: @MAIN_CODE_COLOR;
+        vertical-align: middle;
+      }
     }
   }
-}
 
-.top-title {
-  height: 80px;
-  line-height: 60px;
-  h1 {
-    float: left;
+  .top-title {
+    height: 80px;
+    line-height: 60px;
+    h1 {
+      float: left;
+    }
+    & > div {
+      float: right;
+    }
   }
-  & > div {
-    float: right;
-  }
-}
 
-.content-edit-button {
-  font-size: 14px;
-  background-color: @CONTENT_TREE_H3;
-}
+  .content-edit-button {
+    font-size: 14px;
+    background-color: @CONTENT_TREE_H3;
+  }
 </style>

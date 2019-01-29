@@ -20,7 +20,7 @@ class ContextMenu {
       new MenuItem({
         label: '  编辑          ',
         click() {
-          _this.router.push(`/edit/${_this.store.getters.GET_TITLE}`);
+          _this.router.push(`/edit/${btoa(_this.store.getters.GET_TITLE)}`);
         },
       })
     );

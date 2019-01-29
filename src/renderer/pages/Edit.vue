@@ -1,12 +1,12 @@
 <template>
   <div class="edit-container">
     <div class="edit-title">
-      <Input placeholder="请输入title" v-model="title" style="width: 100%" />
+      <Input placeholder="请输入title" v-model="title" style="width: 100%"/>
       <Button class="edit-confirm" type="info" @click="saveEdit">保存</Button>
       <Button type="default" @click="cancelEdit">取消</Button>
     </div>
     <div class="edit-markdown">
-      <mavon-editor v-model="mdContent" @save="saveFile" />
+      <mavon-editor ref="mdEdit" v-model="mdContent" @save="saveFile"/>
     </div>
   </div>
 </template>
@@ -24,6 +24,7 @@ export default {
   },
   data() {
     return {
+      dirName: '',
       title: '',
       oldTitle: '',
 
@@ -32,12 +33,27 @@ export default {
     };
   },
   methods: {
+    initEditContent(path) {
+      this.mdContent = this.readFile(path);
+    },
+
+    handelTitle(t) {
+      const title = atob(t);
+      if (title.includes('/')) {
+        this.dirName = path.dirname(title);
+        this.oldTitle = this.title = path.basename(title);
+      } else {
+        this.oldTitle = this.title = title;
+      }
+      return title;
+    },
+
     readFile(filePath) {
       if (!filePath) {
         return;
       }
       const p = path.join(this.baseDir, filePath + '.md');
-      this.mdContent = fs.readFileSync(p)
+      return fs.readFileSync(p)
         .toString();
     },
 
@@ -45,11 +61,14 @@ export default {
       if (!this.title) {
         return;
       }
-      fs.writeFileSync(path.join(this.baseDir, this.title + '.md'), v);
+      const realTitle = path.join(this.dirName, this.title);
+      const realPath = path.join(this.baseDir, realTitle + '.md');
+
       if (this.oldTitle !== this.title && this.oldTitle !== '') {
-        fs.unlinkSync(path.join(this.baseDir, this.oldTitle + '.md'));
-        this.$store.commit('SET_TITLE', this.title);
+        fs.renameSync(path.join(this.baseDir, this.dirName, this.oldTitle + '.md'), realPath);
+        this.$store.commit('SET_TITLE', realTitle);
       }
+      fs.writeFileSync(realPath, v);
       this.$router.push('/');
     },
 
@@ -60,12 +79,16 @@ export default {
     cancelEdit() {
       this.$router.push('/');
     },
+    // addImage(imgName, img) {
+    //   console.log(imgName);
+    //   console.log(img);
+    //   this.$refs.mdEdit.$img2Url(imgName, '/home/yzm/Pictures/webwxgeticon.jpeg');
+    // },
   },
   created() {
-    this.title = this.$route.params.title;
-    if (this.title !== 'add') {
-      this.readFile(this.title);
-      this.oldTitle = this.title;
+    const title = this.$route.params.title;
+    if (title !== 'add') {
+      this.initEditContent(this.handelTitle(title));
     } else {
       this.title = '';
     }
@@ -73,25 +96,25 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@import "../assets/style/global.less";
+  @import "../assets/style/global.less";
 
-.edit-title {
-  margin-bottom: 20px;
-  display: flex;
-  & > div {
-    margin-right: 20px;
+  .edit-title {
+    margin-bottom: 20px;
+    display: flex;
+    & > div {
+      margin-right: 20px;
+    }
+    button {
+      width: 100px;
+      margin-right: 10px;
+    }
   }
-  button {
-    width: 100px;
-    margin-right: 10px;
+
+  .edit-container {
+    padding: 10px;
   }
-}
 
-.edit-container {
-  padding: 10px;
-}
-
-.edit-confirm {
-  background-color: @CONTENT_TREE_H3;
-}
+  .edit-confirm {
+    background-color: @CONTENT_TREE_H3;
+  }
 </style>
