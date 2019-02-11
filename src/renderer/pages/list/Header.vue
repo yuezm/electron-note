@@ -83,6 +83,7 @@ export default {
 
   .menu-container {
     position: fixed;
+    z-index: 9;
     top: 0;
     width: 100%;
   }

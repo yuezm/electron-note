@@ -15,6 +15,7 @@ class NoteConfig {
     if (!fs.existsSync(configDirPath)) {
       fs.mkdirSync(configDirPath);
       fs.mkdirSync(path.join(configDirPath, 'docs'));
+      fs.mkdirSync(path.join(configDirPath, 'images'));
     }
 
     const configPath = path.join(configDirPath, 'config.json');
