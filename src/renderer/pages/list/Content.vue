@@ -136,7 +136,8 @@ export default {
 
   .content {
     color: @MAIN_FONT_COLOR;
-    font-family: 'Ubuntu mogo';
+    font-family: 'ubuntu Mono';
+    // font-family: 'Courier New', Courier, monospace
     h1 {
       margin-bottom: 15px;
       font-size: 40px;
