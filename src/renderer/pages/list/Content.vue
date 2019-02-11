@@ -136,27 +136,38 @@ export default {
 
   .content {
     color: @MAIN_FONT_COLOR;
+    font-family: 'Ubuntu mogo';
     h1 {
+      margin-bottom: 15px;
       font-size: 40px;
     }
     h2 {
+      margin-bottom: 10px;
       font-size: 32px;
       font-weight: normal;
       color: @CONTENT_TREE_H2;
     }
 
     h3 {
-      font-size: 18px;
       padding: 5px 0;
+      margin-bottom: 5px;
+      font-size: 18px;
       color: @CONTENT_TREE_H3;
     }
     p {
       line-height: 20px;
+      margin-bottom: 5px;
       font-size: 14px;
     }
-
-    li {
-      margin-bottom: 5px;
+    ul, ol{
+      padding: 10px 10px 10px 25px;
+      background: #f8f8f8;
+      border: solid 1px #e1e4e5;
+      border-radius: 4px;
+      li {
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
     }
     pre {
       padding: 10px;

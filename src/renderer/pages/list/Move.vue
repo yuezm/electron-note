@@ -1,10 +1,10 @@
 <template>
   <div class="move-container" v-if="moveShow">
     <div>
-      <Icon type="md-arrow-round-up" title="回到顶部" @click="scroll('top')" />
+      <Icon class="icon-move" type="md-arrow-round-up" title="回到顶部" @click="scroll('top')" />
     </div>
     <div>
-      <Icon type="md-arrow-round-down" title="滑到底部" @click="scroll('bottom')" />
+      <Icon class="icon-move" type="md-arrow-round-down" title="滑到底部" @click="scroll('bottom')" />
     </div>
   </div>
 </template>
@@ -40,5 +40,8 @@ export default {
   margin-top: -100px;
   font-size: 80px;
   color: #ccc;
+}
+.icon-move{
+  cursor: pointer;
 }
 </style>
