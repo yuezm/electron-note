@@ -1,4 +1,5 @@
 // ------ 标题组件树 ------
+const crypto = require('crypto');
 class Tree {
   constructor() {
     // h0LevelTree是为了保持统一格式,简化代码,最后返回值是它的children
@@ -51,11 +52,19 @@ class Tree {
    * @return {string} 返回上一级和本级的结合,防止出现覆盖
    */
   static formatHref(href, connection = '') {
-    const re = /[^a-z|A-Z|0-9|-|_|:|\.]/;
-    return (
-      href.replace(re, '') +
-      (connection ? '_' + connection.replace(re, '') : '')
-    );
+    const reChinese = /[\u4e00-\u9fa5]+/; // 去除中文,使用md5取前8位
+    const re = /[^a-z|A-Z|0-9|-|_|:|\.]+/g; // 其他符号一律使用_替代
+
+    const newColl = connection
+      .replace(reChinese, s => {
+        return crypto
+          .createHash('md5')
+          .update(s)
+          .digest('hex')
+          .substring(0, 8);
+      })
+      .replace(re, '_');
+    return href && newColl ? href + '_' + newColl : href + newColl;
   }
 }
 

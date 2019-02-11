@@ -91,7 +91,7 @@ export default {
 
   .nav-tree {
     position: fixed;
-    z-index: -1;
+    z-index: 1;
     top: 70px;
     left: 10px;
     bottom: 10px;
