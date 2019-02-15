@@ -85,8 +85,10 @@ export default {
   @import "../../assets/style/global.less";
 
   .content-container {
-    margin-right: 10px;
-    padding: 70px 0 0 350px;
+    margin-top: 70px;
+    padding: 0 10px 0 350px;
+    height: calc(100vh - 70px);
+    overflow-y: auto;
   }
 
   .nav-tree {
