@@ -13,7 +13,7 @@ import { app, BrowserWindow } from 'electron';
 
 // Install `vue-devtools`
 app.on('ready', () => {
-  BrowserWindow.addDevToolsExtension('/home/yzm/.config/google-chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/4.1.5_0');
+  BrowserWindow.addDevToolsExtension('/Users/yuezm/Library/Application Support/Google/Chrome/Default/Extensions/nhdogjmejiglipccpnnnanhbledajbpd/4.1.5_0');
 });
 
 // Require `main` process to boot app

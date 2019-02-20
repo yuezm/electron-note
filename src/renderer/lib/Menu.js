@@ -15,7 +15,6 @@ class ContextMenu {
     const menu = new Menu();
     const _this = this;
 
-    console.log(process.cwd());
     menu.append(
       new MenuItem({
         label: '  编辑          ',

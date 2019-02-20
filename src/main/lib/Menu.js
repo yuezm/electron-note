@@ -26,6 +26,8 @@ class NoteMenu {
                 app.quit();
               },
             },
+            { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+            { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
           ],
         },
       ])
