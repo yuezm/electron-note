@@ -70,7 +70,6 @@ function computeHash(data) {
 
 function readBaseDir(basePath, dirPath = '') {
   const targetDir = fs.readdirSync(basePath);
-
   return targetDir.map(item => {
     const baseName = splitFilename(item);
     const menuInfo = {
