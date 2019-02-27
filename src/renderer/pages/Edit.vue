@@ -1,12 +1,12 @@
 <template>
   <div class="edit-container">
     <div class="edit-title">
-      <Input placeholder="请输入title" v-model="title" style="width: 100%" />
+      <Input placeholder="请输入title" v-model="title" style="width: 100%"/>
       <Button class="edit-confirm" type="info" @click="saveEdit">保存</Button>
       <Button type="default" @click="cancelEdit">取消</Button>
     </div>
     <div class="edit-markdown">
-      <mavon-editor ref="mdEdit" v-model="mdContent" @save="saveFile" @imgAdd="addImage" />
+      <mavon-editor ref="mdEdit" v-model="mdContent" @save="saveFile" @imgAdd="addImage"/>
     </div>
   </div>
 </template>
@@ -83,7 +83,8 @@ export default {
     addImage(imgName, img) {
       const { name } = img;
       const realyPath = path.join('/home/yzm/electron-note/images', name);
-      fs.createReadStream(img.path).pipe(fs.createWriteStream(realyPath));
+      fs.createReadStream(img.path)
+        .pipe(fs.createWriteStream(realyPath));
       this.$refs.mdEdit.$img2Url(imgName, realyPath);
     },
   },
@@ -98,25 +99,25 @@ export default {
 };
 </script>
 <style scoped lang="less">
-@import "../assets/style/global.less";
+  @import "../assets/style/global.less";
 
-.edit-title {
-  margin-bottom: 20px;
-  display: flex;
-  & > div {
-    margin-right: 20px;
+  .edit-title {
+    margin-bottom: 20px;
+    display: flex;
+    & > div {
+      margin-right: 20px;
+    }
+    button {
+      width: 100px;
+      margin-right: 10px;
+    }
   }
-  button {
-    width: 100px;
-    margin-right: 10px;
+
+  .edit-container {
+    padding: 10px;
   }
-}
 
-.edit-container {
-  padding: 10px;
-}
-
-.edit-confirm {
-  background-color: @CONTENT_TREE_H3;
-}
+  .edit-confirm {
+    background-color: @CONTENT_TREE_H3;
+  }
 </style>

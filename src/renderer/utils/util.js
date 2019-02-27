@@ -4,6 +4,8 @@ const fs = require('fs');
 import MarkdownIt from 'markdown-it';
 import Tree from './Tree';
 
+const filesExcept = [ '.DS_Store', '.git' ];
+
 /**
  * 分割文件,取消后缀名
  * @param {string} filename 文件全名
@@ -71,6 +73,9 @@ function computeHash(data) {
 function readBaseDir(basePath, dirPath = '') {
   const targetDir = fs.readdirSync(basePath);
   return targetDir.map(item => {
+    if (filesExcept.includes(item)) {
+      return [];
+    }
     const baseName = splitFilename(item);
     const menuInfo = {
       name: path.join(dirPath, baseName),
