@@ -49,6 +49,9 @@ export default {
   },
   methods: {
     getFileAndHandle(filename) {
+      if (!filename) {
+        return;
+      }
       const p = path.join(this.baseDir, filename) + '.md';
       fs.readFile(p, (error, data) => {
         if (!error) {
@@ -74,9 +77,9 @@ export default {
     },
   },
   created() {
-    this.$root.$on('WINDOW_FOCUS', () => {
-      this.getFileAndHandle(this.title);
-    });
+    // this.$root.$on('WINDOW_FOCUS', () => {
+    //   this.getFileAndHandle(this.title);
+    // });
   },
 };
 </script>
@@ -102,21 +105,22 @@ export default {
     border-radius: 5px;
     background-color: #f5f5f5;
     border: 1px solid #e3e3e3;
+    overflow-y: auto;
 
     li {
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       list-style: none;
     }
 
     & > ul > li {
-      font-size: 22px;
+      font-size: 16px;
       font-weight: bold;
       a {
         color: @CONTENT_TREE_H1;
       }
       & > ul > li {
         padding-left: 8px;
-        font-size: 18px;
+        font-size: 14px;
         font-weight: normal;
         a {
           color: @CONTENT_TREE_H2;
@@ -127,7 +131,7 @@ export default {
           white-space: nowrap;
           text-overflow: ellipsis;
           font-weight: normal;
-          font-size: 14px;
+          font-size: 13px;
           a {
             color: @CONTENT_TREE_H3;
           }
@@ -138,38 +142,39 @@ export default {
 
   .content {
     color: @MAIN_FONT_COLOR;
-    font-family: 'ubuntu Mono';
-    // font-family: 'Courier New', Courier, monospace
     h1 {
+      padding-top: 10px;
       margin-bottom: 15px;
-      font-size: 40px;
+      font-size: 20px;
     }
     h2 {
+      padding-top: 5px;
       margin-bottom: 10px;
-      font-size: 32px;
+      font-size: 16px;
       font-weight: normal;
       color: @CONTENT_TREE_H2;
     }
 
     h3 {
-      padding: 5px 0;
+      padding: 4px 0;
       margin-bottom: 5px;
-      font-size: 18px;
+      font-size: 14px;
       color: @CONTENT_TREE_H3;
     }
     p {
       line-height: 20px;
       margin-bottom: 5px;
-      font-size: 14px;
+      font-size: 13px;
     }
-    ul, ol{
+    ul,
+    ol {
       padding: 10px 10px 10px 25px;
       background: #f8f8f8;
       border: solid 1px #e1e4e5;
       border-radius: 4px;
       li {
         margin-bottom: 5px;
-        font-size: 14px;
+        font-size: 13px;
       }
     }
     pre {
@@ -178,9 +183,8 @@ export default {
       border: solid 1px #e1e4e5;
       border-radius: 4px;
       overflow-x: auto;
-      font-size: 14px;
+      font-size: 13px;
       code {
-        font-family: Ubuntu Mono, monospace, serif;
         color: @MAIN_CODE_COLOR;
         vertical-align: middle;
       }
@@ -188,10 +192,11 @@ export default {
   }
 
   .top-title {
-    height: 80px;
+    height: 60px;
     line-height: 60px;
     h1 {
       float: left;
+      font-size: 18px;
     }
     & > div {
       float: right;

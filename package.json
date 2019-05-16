@@ -1,7 +1,7 @@
 {
-  "name": "electron-notes",
-  "version": "1.0.4",
-  "author": "zhiming.yue <zhiming.yue@nx-engine.com>",
+  "name": "enotes",
+  "version": "1.0.5",
+  "author": "zhiming.yue <yuezmkeven@gmail.com>",
   "description": "An electron-vue project",
   "license": "",
   "main": "./dist/electron/main.js",
@@ -21,7 +21,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "electron-notes",
+    "productName": "enotes",
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"

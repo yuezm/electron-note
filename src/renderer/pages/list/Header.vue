@@ -90,6 +90,8 @@ export default {
 
   .menu-container .menu-list {
     .MENU_BG_COLOR();
+    display: flex;
+    flex-wrap: nowrap;
     &::after {
       content: "";
       display: none;
