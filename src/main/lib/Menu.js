@@ -1,13 +1,14 @@
 import { app, Menu } from 'electron';
 
 const INIT = Symbol('INIT');
+
 class NoteMenu {
   constructor(mainWindow) {
     this.mainWindow = mainWindow;
-    this[INIT]();
+    this[ INIT ]();
   }
 
-  [INIT]() {
+  [ INIT ]() {
     const _this = this;
     Menu.setApplicationMenu(
       Menu.buildFromTemplate([
@@ -28,10 +29,21 @@ class NoteMenu {
             },
             { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
             { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+            {
+              label: 'Find', accelerator: 'CmdOrCtrl+F', click() {
+                _this.mainWindow.webContents.send('SEARCH');
+              },
+            },
+            {
+              label: 'Find Next', accelerator: 'F3', click() {
+                _this.mainWindow.webContents.send('SEARCH_NEXT');
+              },
+            },
           ],
         },
       ])
     );
   }
 }
+
 export default NoteMenu;

@@ -1,5 +1,5 @@
 {
-  "name": "electron-notes",
+  "name": "enotes",
   "version": "1.0.2",
   "author": "zhiming.yue <yuezmkeven@gmail.com>",
   "description": "An electron-vue project",
@@ -21,7 +21,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "electron-notes",
+    "productName": "enotes",
     "appId": "com.example.yourapp",
     "directories": {
       "output": "build"

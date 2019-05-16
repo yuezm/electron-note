@@ -52,3 +52,4 @@ window.addEventListener('contextmenu', () => {
     menu.popup();
   }
 });
+
