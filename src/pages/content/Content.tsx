@@ -14,8 +14,8 @@ import { join } from 'path';
     'a-icon': Icon,
   },
   beforeRouteUpdate(to, from, next) {
-    (this as Content).handlePathChanged();
     next();
+    (this as Content).handlePathChanged();
   },
 })
 export default class Content extends Vue {
