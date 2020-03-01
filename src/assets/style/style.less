@@ -1,0 +1,58 @@
+@import "common";
+
+.ant-layout-content {
+  overflow: auto;
+}
+
+.editor-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-split {
+  border-right: 2px solid #999;
+}
+
+.editor-textarea {
+  resize: none;
+  .full-hw;
+}
+
+.editor-html {
+  border: 1px solid #d9d9d9;
+
+  h1 {
+    font-size: 18px;
+    font-weight: bolder;
+  }
+
+  h2, h3 {
+    font-size: 14px;
+    font-weight: bolder;
+  }
+
+  h4, h5, h6 {
+    font-size: 12px;
+  }
+}
+
+
+.CodeMirror {
+  height: 100% !important;
+}
+
+.CodeMirror-code, .editor-html {
+  font-family: Operator Mono, Fira Code, Consolas, 'Courier New', monospace !important;
+}
+
+.editor-action-container {
+  position: fixed;
+  z-index: 99;
+  right: 70px;
+  top: 6px;
+
+  .anticon {
+    font-size: 20px;
+    margin-left: 5px;
+  }
+}

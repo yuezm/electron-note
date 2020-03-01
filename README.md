@@ -1,10 +1,24 @@
-# electron-notes
+# electron-demo
 
-> An electron project
+## Project setup
+```
+npm install
+```
 
-electron的日记程序
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
 
-## 打包
+### Compiles and minifies for production
 ```
 npm run build
 ```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
