@@ -2,11 +2,12 @@ import Vue, { CreateElement } from 'vue';
 import Component from 'vue-class-component';
 import { VNode } from 'vue/types/umd';
 import { Button, Icon } from 'ant-design-vue';
-
+import { join } from 'path';
 import { readFileSync } from 'fs';
+import open from 'open';
+
 
 import { addExt, transMDToHtml } from '@/helper';
-import { join } from 'path';
 
 @Component({
   components: {
@@ -34,6 +35,8 @@ export default class Content extends Vue {
 
   getContent(): void {
     this.htmlText = transMDToHtml(readFileSync(this.filePath).toString());
+
+    console.log(this.htmlText);
   }
 
   handleRouteToEdit(): void {
@@ -43,7 +46,7 @@ export default class Content extends Vue {
 
   render(h: CreateElement): VNode {
     return (
-      <div>
+      <div id="content">
         <div class="over-h" style="height:50px;">
           <a-icon type="edit" className="pull-right" style="font-size:20px" on-click={ this.handleRouteToEdit } />
         </div>
@@ -59,3 +62,4 @@ export default class Content extends Vue {
     );
   }
 }
+
