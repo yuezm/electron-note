@@ -14,7 +14,7 @@
     "ant-design-vue": "^1.4.11",
     "codemirror": "^5.52.0",
     "core-js": "^2.6.5",
-    "marked": "^0.8.0",
+    "marked": "^4.0.10",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0",
